@@ -1,0 +1,18 @@
+baseURL = 'http://example.org/'
+languageCode = 'en-us'
+title = 'AlphaSea'
+theme = "ananke"
+
+[menu]
+[[menu.main]]
+  name = 'Tutorial'
+  url = '/tutorial'
+  weight = -120
+[[menu.main]]
+  name = 'GitHub'
+  url = 'https://github.com/alphasea-dapp'
+  weight = -110
+[[menu.main]]
+  name = 'Leaderboard (Testnet)'
+  url = 'https://alphasea-app-ropsten.netlify.app'
+  weight = -100
