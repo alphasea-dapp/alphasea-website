@@ -1,4 +1,4 @@
-baseURL = 'https://alphasea.netlify.app/'
+baseURL = 'https://alphasea.io/'
 languageCode = 'en-us'
 title = 'AlphaSea'
 theme = "ananke"
