@@ -1,7 +1,8 @@
-baseURL = 'http://example.org/'
+baseURL = 'https://alphasea.netlify.app/'
 languageCode = 'en-us'
 title = 'AlphaSea'
 theme = "ananke"
+relativeURLs = true
 
 [menu]
 [[menu.main]]
