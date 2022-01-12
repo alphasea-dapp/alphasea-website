@@ -20,6 +20,7 @@ AlphaSeaのtestnet(ropsten)に参加する方法。
 - alphasea-trade-botを動かすとCEXトレードで損失する可能性があります
 - 自己責任
 - 現状、バグで動きません
+- 特に連絡無く修正していきます (コントラクトの再デプロイなど。[docker-compose-ropsten.yml](https://github.com/alphasea-dapp/alphasea-agent/blob/master/docker-compose-ropsten.yml)のALPHASEA_CONTRACT_ADDRESSが変更されていたら再デプロイされたと思ってください)
 
 ## Google Compute Engineインスタンスを作る
 
