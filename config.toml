@@ -3,17 +3,18 @@ languageCode = 'en-us'
 title = 'AlphaSea'
 theme = "ananke"
 relativeURLs = true
+hasCJKLanguage = true
 
 [menu]
 [[menu.main]]
-  name = 'Tutorial'
-  url = '/tutorial'
+  name = 'Tutorial (testnet)'
+  url = '/tutorial_testnet'
   weight = -120
 [[menu.main]]
   name = 'GitHub'
   url = 'https://github.com/alphasea-dapp'
   weight = -110
 [[menu.main]]
-  name = 'Leaderboard (Testnet)'
+  name = 'Leaderboard (testnet)'
   url = 'https://alphasea-app-ropsten.netlify.app'
   weight = -100
