@@ -24,24 +24,36 @@ AlphaSeaのtestnet(ropsten)に参加する方法。
 
 ## Google Compute Engineインスタンスを作る
 
+以下の構成のインスタンスを2つ作ります。
+インスタンスA, Bと呼びます。
+
 - マシンタイプ: e2-medium
 - OS: Container optimized OS 93 LTS (docker version 20.10.0以上 [補足](https://qiita.com/skobaken/items/03a8b9d0e443745862ac))
 - ディスク: 40GB SSD
+
+### 補足
 
 このチュートリアル実行直後のリソース
 
 - ディスク消費量: 6.7GB
 - メモリ消費量: 1GB
 
-以下、このインスタンス内で作業。
+インスタンスを分ける理由は、
+Google Compute Engineだとそのままだと、
+containerからhostにアクセスできなかったため。
+ファイアウォールとかをいじればできるのかもしれないが、
+ミスると嫌なので2つ作りました。
+この辺は各自好きな方法でやれば良いと思います。
+
+ディスクは10GBだと少し足りない気がします。
 
 ## docker-composeをインストール
 
-以下に従い、docker-composeをインストール
+以下に従い、全てのインスタンスにdocker-composeをインストール
 
 [Running Docker Compose with Docker](https://cloud.google.com/community/tutorials/docker-compose-on-container-optimized-os)
 
-## alphasea-agentを動かす
+## インスタンスAでalphasea-agentを動かす
 
 [alphasea-agent](https://github.com/alphasea-dapp/alphasea-agent) を動かします。
 
@@ -61,7 +73,7 @@ cd alphasea-agent
 docker-compose -f docker-compose-ropsten.yml up -d
 ```
 
-## alphasea-example-modelを動かす
+## インスタンスBでalphasea-example-modelを動かす
 
 [alphasea-example-model](https://github.com/alphasea-dapp/alphasea-example-model)を動かします。
 
@@ -71,7 +83,13 @@ git clone https://github.com/alphasea-dapp/alphasea-example-model.git
 ```
 
 [alphasea-example-model](https://github.com/alphasea-dapp/alphasea-example-model) 
-の手順にしたがって.envを作成。
+の手順にしたがって.envを作成。ALPHASEA_AGENT_BASE_URLにインスタンスAの内部IPを設定します
+
+.envの例
+```text
+ALPHASEA_AGENT_BASE_URL=http://internal_ip:8070
+ALPHASEA_MODEL_ID=my_model_id
+```
 
 alphasea-example-modelを起動
 
@@ -79,7 +97,7 @@ alphasea-example-modelを起動
 docker-compose up -d
 ```
 
-## alphasea-trade-botを動かす
+## インスタンスBでalphasea-trade-botを動かす
 
 [alphasea-trade-bot](https://github.com/alphasea-dapp/alphasea-trade-bot) を動かします。
 
@@ -89,7 +107,13 @@ git clone https://github.com/alphasea-dapp/alphasea-trade-bot.git
 ```
 
 [alphasea-trade-bot#動かし方](https://github.com/alphasea-dapp/alphasea-trade-bot#%E5%8B%95%E3%81%8B%E3%81%97%E6%96%B9)
-の手順にしたがって.envを作成。
+の手順にしたがって.envを作成。ALPHASEA_AGENT_BASE_URLにインスタンスAの内部IPを設定します
+
+.envの例
+```text
+ALPHASEA_AGENT_BASE_URL=http://internal_ip:8070
+上記の手順に記載のCCXT設定
+```
 
 alphasea-trade-botを起動
 
