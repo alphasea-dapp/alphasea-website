@@ -8,7 +8,7 @@ hasCJKLanguage = true
 [menu]
 [[menu.main]]
   name = 'Tutorial (testnet)'
-  url = '/tutorial_testnet'
+  url = '/tutorial-testnet'
   weight = -120
 [[menu.main]]
   name = 'GitHub'
