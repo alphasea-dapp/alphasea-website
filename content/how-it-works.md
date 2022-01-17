@@ -194,7 +194,7 @@ ADA,-0.05
 
 positionはリバランス後のポジションを表します。
 プラスはロング、マイナスはショートです。
-ポジション合計は1以下です。
+ポジションの絶対値の合計は1以下です。
 リバランスは1:00-2:00UTCの1時間でTWAP執行によって行うことを想定しています。
 
 [crypto_daily.md](https://github.com/alphasea-dapp/alphasea/blob/master/tournaments/crypto_daily.md)
@@ -216,3 +216,6 @@ positionはリバランス後のポジションを表します。
 |予測暗号化の鍵|agentプロセスのメモリ|agentプロセス終了まで|
 |購入データ|ETH|永久|
 
+ETHに何が保存されているかは、以下のデバッグページを見るとイメージをつかめると思います。
+
+[デバッグ (testnet)](https://alphasea-app-ropsten.netlify.app/debug)
