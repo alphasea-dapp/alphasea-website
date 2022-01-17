@@ -104,7 +104,7 @@ Predictorが執行時間が終わったあとで予測を公開します。
 
 ## アーキテクチャー
 
-{{< figure src="/svgs/test.svg" title="AlphaSea architecture" >}}
+{{< figure src="/svgs/architecture.svg" title="AlphaSea architecture" >}}
 
 Decentralizedに実装されています。
 色の付いたexample-modelが特に重要で、
