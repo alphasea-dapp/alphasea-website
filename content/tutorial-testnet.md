@@ -11,16 +11,16 @@ AlphaSeaのtestnet(ropsten)に参加する方法。
 ## このチュートリアルでやること
 
 1. alphasea-agentを動かす (2, 3を動かすために必要)
-2. alphasea-example-modelを動かす (予測を売るために必要)
-3. alphasea-trade-botを動かす (予測を買ってCEXでトレードするために必要)
+2. alphasea-example-modelを動かす (Predictorをやるために必要)
+3. alphasea-trade-botを動かす (Executorをやるために必要)
 
 注意
 
-- このチュートリアルはethのtestnet(ropsten)で動かすので、ガス代や予測購入費用はかかりません
+- このチュートリアルはethのtestnet(ropsten)で動かすので、ガス代や予測購入費用には、faucetサイトから無料で取得したtestnet用のETHを使えます
 - alphasea-trade-botを動かすとCEXトレードで損失する可能性があります
-- 自己責任
-- 現状、バグで動きません
+- 一応、動いていますが、作ったばかりなのでバグがあるかもしれません
 - 特に連絡無く修正していきます (コントラクトの再デプロイなど。[docker-compose-ropsten.yml](https://github.com/alphasea-dapp/alphasea-agent/blob/master/docker-compose-ropsten.yml)のALPHASEA_CONTRACT_ADDRESSが変更されていたら再デプロイされたと思ってください)
+- 自己責任
 
 ## Google Compute Engineインスタンスを作る
 
@@ -56,13 +56,14 @@ containerからhostにアクセスできなかったため。
 ## インスタンスAでalphasea-agentを動かす
 
 [alphasea-agent](https://github.com/alphasea-dapp/alphasea-agent) を動かします。
+Predictor, Executorをやるために必要です。
 
 ```bash
 cd ~/
 git clone https://github.com/alphasea-dapp/alphasea-agent.git
 ```
 
-以下に従い秘密鍵を用意し、ウォレットにETHを入れる。
+以下に従い秘密鍵を用意し、ウォレットにETH(testnet用)を入れる。
 
 [alphasea-agent#秘密鍵](https://github.com/alphasea-dapp/alphasea-agent#%E7%A7%98%E5%AF%86%E9%8D%B5%E3%82%92%E7%94%A8%E6%84%8F)
 
@@ -76,6 +77,7 @@ docker-compose -f docker-compose-ropsten.yml up -d
 ## インスタンスBでalphasea-example-modelを動かす
 
 [alphasea-example-model](https://github.com/alphasea-dapp/alphasea-example-model)を動かします。
+Predictor(予測を売る人)をやるために必要です。
 
 ```bash
 cd ~/
@@ -100,6 +102,7 @@ docker-compose up -d
 ## インスタンスBでalphasea-trade-botを動かす
 
 [alphasea-trade-bot](https://github.com/alphasea-dapp/alphasea-trade-bot) を動かします。
+Executor(予測を買ってCEXでトレードする人)をやるために必要です。
 
 ```bash
 cd ~/
@@ -127,6 +130,7 @@ docker-compose up -d
 
 [AlphaSea Leaderboard](https://alphasea-app-ropsten.netlify.app/)
 
+eth上にあるデータを表示しているだけです。
 以下を動かせばローカルで同じものを見れます。
 
 - [alphasea-ui](https://github.com/alphasea-dapp/alphasea-ui)
