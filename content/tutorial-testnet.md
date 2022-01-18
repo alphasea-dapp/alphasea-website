@@ -7,6 +7,7 @@ draft: false
 
 AlphaSeaのtestnet(ropsten)に参加する方法。
 作業メモ兼チュートリアルです。
+[AlphaSeaの仕組み](/how-it-works)も見ると理解しやすいです。
 
 ## このチュートリアルでやること
 
