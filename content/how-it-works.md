@@ -196,6 +196,7 @@ positionはリバランス後のポジションを表します。
 プラスはロング、マイナスはショートです。
 ポジションの絶対値の合計は1以下です。
 リバランスは1:00-2:00UTCの1時間でTWAP執行によって行うことを想定しています。
+なので、1:00-2:00UTCの平均価格から次の日の1:00-2:00UTCの平均価格までが1日で得られるリターンです。
 
 [crypto_daily.md](https://github.com/alphasea-dapp/alphasea/blob/master/tournaments/crypto_daily.md)
 
@@ -219,3 +220,20 @@ positionはリバランス後のポジションを表します。
 ETHに何が保存されているかは、以下のデバッグページを見るとイメージをつかめると思います。
 
 [デバッグ (testnet)](https://alphasea-app-ropsten.netlify.app/debug)
+
+## メタモデル
+
+メタモデルはalphasea-agentで実装されています。
+現状の実装は以下のようになっています。
+
+- 過去20日間の成績で評価 (成績が確定していない直近2日は除く)
+- アンサンブルしたときのシャープレシオが最大となるように複数モデルを選択
+- 購入したモデルを等ウェイトでアンサンブル
+- 購入費用を考慮 (購入することで得られるリターンより、購入費用が多い場合は購入しない意図。ガス代は未実装)
+- リバランスの取引コストを考慮
+
+実装箇所
+
+- [alphasea-agent/src/executor/executor.py](https://github.com/alphasea-dapp/alphasea-agent/blob/3dfd3b3c3bef2d5b7cc228056724e8a6bada31d2/src/executor/executor.py#L78)
+- [alphasea-agent/src/model_selection/equal_weight_model_selector.py](https://github.com/alphasea-dapp/alphasea-agent/blob/3dfd3b3c3bef2d5b7cc228056724e8a6bada31d2/src/model_selection/equal_weight_model_selector.py#L58)
+
