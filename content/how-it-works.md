@@ -19,7 +19,7 @@ NumeraiだとNumerai fundに相当します。
 
 ## 取引方法
 
-ETHを介して予測データを売買します。
+polygon(matic)上のスマートコントラクトを介して予測データを売買します。
 カッコ内の英語はソースコードで使われている名前です。
 
 ### タイムライン
@@ -36,7 +36,7 @@ ETHを介して予測データを売買します。
 ### 予測投稿 (Create Prediction)
 
 Predictorが予測を投稿します。
-具体的には、共通鍵(contentKey)で暗号化した予測(encryptedContent)をETH上に書き込みます。
+具体的には、共通鍵(contentKey)で暗号化した予測(encryptedContent)をブロックチェーン上に書き込みます。
 この時点では予測は暗号化されているので、 投稿者以外は見れません。
 暗号化はNaClのSecretBoxを使っています。
 
@@ -47,7 +47,7 @@ Predictorが予測を投稿します。
 ### 予測を購入 (Purchase)
 
 Executorが予測を購入します。
-購入時にShip用の公開鍵(publicKey)をETH上に書き込みます。
+購入時にShip用の公開鍵(publicKey)をブロックチェーン上に書き込みます。
 
 補足
 
@@ -56,7 +56,7 @@ Executorが予測を購入します。
 ### 購入者へ予測データを送る (Ship)
 
 Predictorが購入者へ予測データを送ります。
-具体的には、Ship用の公開鍵で暗号化した共通鍵(encryptedContentKey)をETH上に書き込みます。
+具体的には、Ship用の公開鍵で暗号化した共通鍵(encryptedContentKey)をブロックチェーン上に書き込みます。
 購入者のみがencryptedContentKeyを復号化しcontentKeyを得られます。
 contentKeyでencryptedContentを復号化すれば予測を見れます。
 暗号化はNaClのBoxを使っています。
@@ -64,7 +64,7 @@ contentKeyでencryptedContentを復号化すれば予測を見れます。
 ### 予測データの公開 (Publish)
 
 しばらく経ったあとにPredictorが予測を公開します。
-具体的には共通鍵(contentKey)をETH上に書き込みます。
+具体的には共通鍵(contentKey)をブロックチェーン上に書き込みます。
 誰でも予測を見れるようになります。
 次回以降、Executorが予測を購入するときの検討材料になります。
 
@@ -170,7 +170,7 @@ thegraph.comのhosted serviceを使っています。
 リーダーボードから使っています。
 
 - [alphasea-dapp/alphasea/subgraph](https://github.com/alphasea-dapp/alphasea/tree/master/subgraph)
-- [thegraph.com alphasea-ropsten](https://thegraph.com/hosted-service/subgraph/richmanbtc/alphasea-ropsten)
+- [thegraph.com alphasea-mumbai](https://thegraph.com/hosted-service/subgraph/richmanbtc/alphasea-mumbai)
 
 ### alphasea.io
 
@@ -179,7 +179,7 @@ thegraph.comのhosted serviceを使っています。
 リーダーボードです。
 
 - [alphasea-dapp/alphasea-ui](https://github.com/alphasea-dapp/alphasea-ui)
-- [Leaderboard (testnet)](https://alphasea-app-ropsten.netlify.app/)
+- [Leaderboard (testnet)](https://alphasea-app-mumbai.netlify.app/)
 
 #### website
 
@@ -220,19 +220,19 @@ positionはリバランス後のポジションを表します。
 
 ## データ保存場所
 
-予測データはETHにオンチェーンで保存されます。
+予測データはブロックチェーンにオンチェーンで保存されます。
 一時的なものはagentプロセスのメモリ上に保存されます。
 
 |データ|保存場所|ライフサイクル|
 |:-:|:-:|:-:|
-|予測データ|ETH|永久|
+|予測データ|ブロックチェーン|永久|
 |公開前の予測データ|agentプロセスのメモリ|agentプロセス終了まで|
 |予測暗号化の鍵|agentプロセスのメモリ|agentプロセス終了まで|
-|購入データ|ETH|永久|
+|購入データ|ブロックチェーン|永久|
 
-ETHに何が保存されているかは、以下のデバッグページを見るとイメージをつかめると思います。
+ブロックチェーンに何が保存されているかは、以下のデバッグページを見るとイメージをつかめると思います。
 
-[デバッグ (testnet)](https://alphasea-app-ropsten.netlify.app/debug)
+[デバッグ (mumbai)](https://alphasea-app-mumbai.netlify.app/debug)
 
 ## メタモデル
 

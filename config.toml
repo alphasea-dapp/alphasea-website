@@ -16,5 +16,5 @@ hasCJKLanguage = true
   weight = -110
 [[menu.main]]
   name = 'Leaderboard (testnet)'
-  url = 'https://alphasea-app-ropsten.netlify.app'
+  url = 'https://alphasea-app-mumbai.netlify.app'
   weight = -100

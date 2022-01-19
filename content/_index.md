@@ -31,7 +31,7 @@ Numeraiのようなことを分散型で実装するために作りました。
 PredictorはNumeraiでシグナルを投稿する人に相当します。
 ExecutorはNumerai fundに相当します。
 誰でもPredictor, Executorになれます。
-eth上のスマートコントラクトを使って実装されています。
+polygon(matic)上のスマートコントラクトを使って実装されています。
 詳細は以下を参照。
 
 [AlphaSeaの仕組み](/how-it-works)
@@ -39,18 +39,18 @@ eth上のスマートコントラクトを使って実装されています。
 ## 進捗
 
 1. [x] 開発
-2. [x] testnet(ropsten)で稼働
-3. [ ] mainnetで稼働
+2. [x] testnet(mumbai)で稼働
+3. [ ] mainnet(matic)で稼働
 
 現状は2です。
 安定稼働を確認できたらぼちぼち3に移ります。
 以下から参加可能です。
 
-[AlphaSea チュートリアル for testnet (ropsten)](/tutorial-testnet)
+[AlphaSea チュートリアル for testnet (mumbai)](/tutorial-testnet)
 
 ## リンク
 
-- [AlphaSea Leaderboard (testnet)](https://alphasea-app-ropsten.netlify.app/)
+- [AlphaSea Leaderboard (mumbai)](https://alphasea-app-mumbai.netlify.app/)
 - [githubリポジトリ](https://github.com/alphasea-dapp)
 - [note記事](https://note.com/hashtag/alphasea)
 

@@ -1,11 +1,11 @@
 ---
-title: "AlphaSea チュートリアル for eth testnet(ropsten)"
+title: "AlphaSea チュートリアル for polygon testnet(mumbai)"
 description: "AlphaSea is a decentralized marketplace for market alphas."
 date: 2022-01-12T00:00:00+00:00
 draft: false
 ---
 
-AlphaSeaのtestnet(ropsten)に参加する方法。
+AlphaSeaのtestnet(mumbai)に参加する方法。
 作業メモ兼チュートリアルです。
 [AlphaSeaの仕組み](/how-it-works)も見ると理解しやすいです。
 
@@ -17,10 +17,10 @@ AlphaSeaのtestnet(ropsten)に参加する方法。
 
 注意
 
-- このチュートリアルはethのtestnet(ropsten)で動かすので、ガス代や予測購入費用には、faucetサイトから無料で取得したtestnet用のETHを使えます
+- このチュートリアルはpolygonのtestnet(mumbai)で動かすので、ガス代や予測購入費用には、faucetサイトから無料で取得したtestnet用のETHを使えます
 - alphasea-trade-botを動かすとCEXトレードで損失する可能性があります
 - 一応、動いていますが、作ったばかりなのでバグがあるかもしれません
-- 特に連絡無く修正していきます (コントラクトの再デプロイなど。[docker-compose-ropsten.yml](https://github.com/alphasea-dapp/alphasea-agent/blob/master/docker-compose-ropsten.yml)のALPHASEA_CONTRACT_ADDRESSが変更されていたら再デプロイされたと思ってください)
+- 特に連絡無く修正していきます (コントラクトの再デプロイなど。[docker-compose-mumbai.yml](https://github.com/alphasea-dapp/alphasea-agent/blob/master/docker-compose-mumbai.yml)のALPHASEA_CONTRACT_ADDRESSが変更されていたら再デプロイされたと思ってください)
 - 自己責任
 
 ## Google Compute Engineインスタンスを作る
@@ -64,7 +64,7 @@ cd ~/
 git clone https://github.com/alphasea-dapp/alphasea-agent.git
 ```
 
-以下に従い秘密鍵を用意し、ウォレットにETH(testnet用)を入れる。
+以下に従い秘密鍵を用意し、ウォレットにMATIC(testnet用)を入れる。
 
 [alphasea-agent#秘密鍵](https://github.com/alphasea-dapp/alphasea-agent#%E7%A7%98%E5%AF%86%E9%8D%B5%E3%82%92%E7%94%A8%E6%84%8F)
 
@@ -72,7 +72,7 @@ alphasea-agentとgeth(ropsten用)を起動
 
 ```bash
 cd alphasea-agent
-docker-compose -f docker-compose-ropsten.yml up -d
+docker-compose -f docker-compose-mumbai.yml up -d
 ```
 
 ## インスタンスBでalphasea-example-modelを動かす
@@ -127,11 +127,11 @@ docker-compose up -d
 
 ## リーダーボードを見る
 
-以下でAlphaSea testnet(ropsten)のリーダーボードを見れます。
+以下でAlphaSea testnet(mumbai)のリーダーボードを見れます。
 
-[AlphaSea Leaderboard](https://alphasea-app-ropsten.netlify.app/)
+[AlphaSea Leaderboard (mumbai)](https://alphasea-app-mumbai.netlify.app/)
 
-eth上にあるデータを表示しているだけです。
+ブロックチェーン上にあるデータを表示しているだけです。
 以下を動かせばローカルで同じものを見れます。
 
 - [alphasea-ui](https://github.com/alphasea-dapp/alphasea-ui)
