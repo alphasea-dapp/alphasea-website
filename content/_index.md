@@ -36,6 +36,10 @@ polygon(matic)上のスマートコントラクトを使って実装されてい
 
 [AlphaSeaの仕組み](/how-it-works)
 
+## トーナメント
+
+[AlphaSeaトーナメント](/tournament)
+
 ## 進捗
 
 1. [x] 開発

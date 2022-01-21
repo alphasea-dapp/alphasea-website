@@ -27,11 +27,14 @@ polygon(matic)上のスマートコントラクトを介して予測データを
 取引の流れは以下のようになっています。時刻はUTCです。
 これを毎日繰り返します。
 
-- 0:00-0:08 Predictorが予測投稿 (Create Prediction)
-- 0:08-0:16 Executorが予測購入 (Purchase)
-- 0:16-0:24 Predictorが予測送信 (Ship)
-- 0:30-1:30 ExecutorがTWAP執行 (CEXなど。AlphaSeaの管轄外)
-- 25:30-25:45 Predictorが予測公開 (Publish)
+- 00:00-00:08 Predictorが予測投稿 (Create Prediction)
+- 00:08-00:16 Executorが予測購入 (Purchase)
+- 00:16-00:24 Predictorが予測送信 (Ship)
+- 00:30-02:30 ExecutorがTWAP執行 (CEXなど。AlphaSeaの管轄外)
+- 26:30-26:45 Predictorが予測公開 (Publish)
+
+これは、crypto_daily_0030トーナメントの場合です。
+[AlphaSeaトーナメント](/tournament)参照。
 
 ### 予測投稿 (Create Prediction)
 
@@ -208,8 +211,8 @@ ADA,-0.05
 positionはリバランス後のポジションを表します。
 プラスはロング、マイナスはショートです。
 ポジションの絶対値の合計は1以下です。
-リバランスは0:30-1:30UTCの1時間でTWAP執行によって行うことを想定しています。
-なので、0:30-1:30UTCの平均価格から次の日の0:30-1:30UTCの平均価格までが1日で得られるリターンです。
+リバランスは0:30-2:30UTCの1時間でTWAP執行によって行うことを想定しています。
+なので、0:30-2:30UTCの平均価格から次の日の0:30-2:30UTCの平均価格までが1日で得られるリターンです。
 
 [crypto_daily.md](https://github.com/alphasea-dapp/alphasea/blob/master/tournaments/crypto_daily.md)
 
