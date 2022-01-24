@@ -5,6 +5,8 @@ date: 2022-01-12T00:00:00+00:00
 draft: false
 ---
 
+mainnetをリリースしたので、[mainnet用のチュートリアル](/tutorial)を見てください。
+
 AlphaSeaのtestnet(mumbai)に参加する方法。
 作業メモ兼チュートリアルです。
 [AlphaSeaの仕組み](/how-it-works)も見ると理解しやすいです。

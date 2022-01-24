@@ -33,7 +33,7 @@ polygon(matic)上のスマートコントラクトを介して予測データを
 - 00:30-02:30 ExecutorがTWAP執行 (CEXなど。AlphaSeaの管轄外)
 - 26:30-26:45 Predictorが予測公開 (Publish)
 
-これは、crypto_daily_0030トーナメントの場合です。
+これは、00:30執行ラウンドの場合です。
 [AlphaSeaトーナメント](/tournament)参照。
 
 ### 予測投稿 (Create Prediction)
@@ -230,26 +230,35 @@ positionはリバランス後のポジションを表します。
 |:-:|:-:|:-:|
 |予測データ|ブロックチェーン|永久|
 |購入データ|ブロックチェーン|永久|
-|公開前の予測データ|redis (disk永続化)|データ削除するまで|
 |予測暗号化の鍵|redis (disk永続化)|データ削除するまで|
+|公開前の予測データ|redis (disk永続化)|48H|
+|モデル選択結果|redis (disk永続化)|48H|
+|イベントキャッシュ|redis (disk永続化)|データ削除するまで|
 
 ブロックチェーンに何が保存されているかは、以下のデバッグページを見るとイメージをつかめると思います。
 
-[デバッグ (mumbai)](https://alphasea-app-mumbai.netlify.app/debug)
+[デバッグ](https://app.alphasea.io/debug)
 
 ## メタモデル
 
 メタモデルはalphasea-agentで実装されています。
 現状の実装は以下のようになっています。
 
-- 過去20日間の成績で評価 (成績が確定していない直近2日は除く)
+- 過去60日間の成績で評価 (成績が確定していない直近1日は除く)
 - アンサンブルしたときのシャープレシオが最大となるように複数モデルを選択
 - 購入したモデルを等ウェイトでアンサンブル
 - 購入費用を考慮 (購入することで得られるリターンより、購入費用が多い場合は購入しない意図。ガス代は未実装)
-- リバランスの取引コストを考慮
+- 取引コストを考慮
 
 実装箇所
 
-- [alphasea-agent/src/executor/executor.py](https://github.com/alphasea-dapp/alphasea-agent/blob/3dfd3b3c3bef2d5b7cc228056724e8a6bada31d2/src/executor/executor.py#L78)
-- [alphasea-agent/src/model_selection/equal_weight_model_selector.py](https://github.com/alphasea-dapp/alphasea-agent/blob/3dfd3b3c3bef2d5b7cc228056724e8a6bada31d2/src/model_selection/equal_weight_model_selector.py#L58)
+- [alphasea-agent/src/executor/executor.py](https://github.com/alphasea-dapp/alphasea-agent/blob/master/src/executor/executor.py)
+- [alphasea-agent/src/model_selection/equal_weight_model_selector.py](https://github.com/alphasea-dapp/alphasea-agent/blob/master/src/model_selection/equal_weight_model_selector.py)
 
+## 自動価格調整
+
+予測の販売価格は以下のアルゴリズムで自動調整されます。
+数値はalphasea-agentの設定で変えられます。
+
+- 前回購入が0個: 価格を20%減らす
+- 前回購入が1個以上: 価格を20%増やす

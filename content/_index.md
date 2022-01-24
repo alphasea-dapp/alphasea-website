@@ -44,13 +44,11 @@ polygon(matic)上のスマートコントラクトを使って実装されてい
 
 1. [x] 開発
 2. [x] testnet(mumbai)で稼働
-3. [ ] mainnet(matic)で稼働
+3. [x] mainnet(matic)で稼働
 
-現状は2です。
-安定稼働を確認できたらぼちぼち3に移ります。
-以下から参加可能です。
+現状は3です。
 
-[AlphaSea チュートリアル for testnet (mumbai)](/tutorial-testnet)
+[AlphaSea チュートリアル for Polygon mainnet](/tutorial)
 
 ## リンク
 
