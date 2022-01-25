@@ -7,7 +7,7 @@ draft: false
 
 AlphaSea (Polygon mainnet)用のチュートリアルです。
 
-- [AlphaSeaについて](/introduction)
+- [AlphaSeaとは？](/introduction)
 - [AlphaSeaの仕組み](/how-it-works)
 
 ## このチュートリアルでやること
