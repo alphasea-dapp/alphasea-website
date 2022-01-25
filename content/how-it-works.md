@@ -176,7 +176,7 @@ thegraph.comのhosted serviceを使っています。
 リーダーボードから使っています。
 
 - [alphasea-dapp/alphasea/subgraph](https://github.com/alphasea-dapp/alphasea/tree/master/subgraph)
-- [thegraph.com alphasea-mumbai](https://thegraph.com/hosted-service/subgraph/richmanbtc/alphasea-mumbai)
+- [thegraph.com alphasea-polygon](https://thegraph.com/hosted-service/subgraph/richmanbtc/alphasea-polygon)
 
 ### alphasea.io
 
@@ -185,7 +185,7 @@ thegraph.comのhosted serviceを使っています。
 リーダーボードです。
 
 - [alphasea-dapp/alphasea-ui](https://github.com/alphasea-dapp/alphasea-ui)
-- [Leaderboard (testnet)](https://alphasea-app-mumbai.netlify.app/)
+- [Leaderboard](https://app.alphasea.io/)
 
 #### website
 

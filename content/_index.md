@@ -48,7 +48,7 @@ polygon(matic)上のスマートコントラクトを使って実装されてい
 
 ## リンク
 
-- [AlphaSea Leaderboard (mumbai)](https://alphasea-app-mumbai.netlify.app/)
+- [AlphaSea Leaderboard](https://app.alphasea.io/)
 - [githubリポジトリ](https://github.com/alphasea-dapp)
 - [note記事](https://note.com/hashtag/alphasea)
 
