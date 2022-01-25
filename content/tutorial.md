@@ -1,43 +1,65 @@
 ---
-title: "AlphaSea Tutorial"
+title: "AlphaSea チュートリアル"
 description: "AlphaSea is a decentralized marketplace for market alphas."
 date: 2022-01-24T00:00:00+00:00
 draft: false
 ---
 
-AlphaSea (Polygon mainnet)用のチュートリアルです。
+AlphaSeaのチュートリアルです。
 
 - [AlphaSeaとは？](/introduction)
 - [AlphaSeaの仕組み](/how-it-works)
 
 ## このチュートリアルでやること
 
-1. alphasea-agentを動かす (2, 3を動かすために必要)
-2. alphasea-example-modelを動かす (Predictorをやるために必要)
-3. alphasea-trade-botを動かす (Executorをやるために必要)
+やること
+
+- alphasea-agentを動かす
+- alphasea-example-modelを動かす (Predictorをやる場合のみ)
+- alphasea-trade-botを動かす (Executorをやる場合のみ)
+
+実現されること
+
+- 毎ラウンド予測を売る (Predictor)
+- メタモデルポジションに従って仮想通貨取引所で自動トレード (Executor)
 
 注意
 
-- このチュートリアルはpolygonのmainnetで動かすので、実際にガス代などがかかります
-- alphasea-trade-botを動かすとCEXトレードで損失する可能性があります
-- 自己責任
+- このチュートリアルはPolygonのmainnetで動かすので、実際にガス代や予測購入費用などがかかります
+- alphasea-trade-botを動かすと自動トレードで損失する可能性があります
+- バグも含めて自己責任
 
-## Google Compute Engineインスタンスを作る
+\* PredictorとExecutorについては[AlphaSeaの仕組み](/how-it-works)参照
 
-以下の構成のインスタンスを2つ作ります。
-インスタンスA, Bと呼びます。
+## 1. Google Compute Engineインスタンスを作る
+
+alphasea-agent, alphasea-example-model, alphasea-trade-botを動かすためのサーバーを用意します。
+Google Compute Engineで以下の構成のインスタンスを2つ作ってください。
+以後、インスタンスA, Bと呼びます。
 
 - マシンタイプ: e2-medium
 - OS: Container optimized OS 93 LTS (docker version 20.10.0以上 [補足](https://qiita.com/skobaken/items/03a8b9d0e443745862ac))
 - ディスク: 40GB
 
-インスタンスAはインスタンスBから参照されるので、
+インスタンスと動かすプログラムの対応は以下のようになります。
+
+|インスタンス|動かすプログラム|
+|:-:|:-:|
+|A|alphasea-agent|
+|B|alphasea-example-model, alphasea-trade-bot|
+
+インスタンスAはインスタンスBからアクセスされるので、
+再起動してもIPアドレスが変わらないように、
 [静的内部 IP アドレスの予約](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-internal-ip-address)
 をすると良いかもしれません。
 
-## docker-composeをインストール
+Google Compute Engineの代わりにAWSや他のVPSでも良いです。
+ただし、dockerとdocker-composeが動く必要があります。
 
-インスタンスA, Bで以下を実行し、docker-composeをインストール
+## 2. docker-composeをインストール
+
+インスタンスA, Bそれぞれで以下のコマンドを実行し、docker-composeをインストールします。
+Container optimized OSを使った場合、dockerはすでにインストール済みなので、docker-composeのみでokです。
 
 ```bash
 echo alias docker-compose="'"'docker run --rm \
@@ -50,122 +72,110 @@ source ~/.bashrc
 
 source: [Running Docker Compose with Docker](https://cloud.google.com/community/tutorials/docker-compose-on-container-optimized-os)
 
-## インスタンスAでalphasea-agentを動かす
+以下のコマンドを実行し、バージョン情報が表示されたら正常にインストールできています。
 
+```bash
+docker-compose version
+```
+
+## 3. インスタンスAでalphasea-agentを動かす
+
+インスタンスAで
 [alphasea-agent](https://github.com/alphasea-dapp/alphasea-agent) を動かします。
+
+alphasea-agentは、AlphaSeaスマートコントラクトを、 シンプルなインターフェースで扱えるようにするためのHTTPサーバーです。
+後で出てくるalphasea-example-modelとalphasea-trade-botを動かすために必要です。
+
+まず、以下のコマンドを実行し、alphasea-agentリポジトリをホームディレクトリにクローンします。
 
 ```bash
 cd ~/
 git clone https://github.com/alphasea-dapp/alphasea-agent.git
 ```
 
-以下に従い秘密鍵を用意し、ウォレットにMATICを入れる。
+以下のリンク先の手順に従い、alphasea-agentを動かします。
+リンク先ではウォレット作成、MATIC入金、.envファイル作成、起動を行います。
 
-[alphasea-agent#秘密鍵](https://github.com/alphasea-dapp/alphasea-agent#%E7%A7%98%E5%AF%86%E9%8D%B5%E3%82%92%E7%94%A8%E6%84%8F)
+[alphasea-agent #agentの動かし方](https://github.com/alphasea-dapp/alphasea-agent#agent%E3%81%AE%E5%8B%95%E3%81%8B%E3%81%97%E6%96%B9)
 
-.envファイル(設定)を作成します。
-```text
-ALPHASEA_EXECUTOR_BUDGET_RATE=0.001
-```
+## 4. インスタンスBでalphasea-example-modelを動かす
 
-ALPHASEA_EXECUTOR_BUDGET_RATEは毎ラウンドの購入予算を、
-ウォレットのMATIC残高に対する割合で指定するものです。
-1日12ラウンドあるので、例えば0.001だと30日で最大30%減るくらいの設定です。
-成績に寄与しない予測と自分の予測は購入しないので、予算を全て使わない場合もあります。
-Predictorだけやる場合は、0を設定すれば購入しなくなります。
-デフォルト値は0です。
+インスタンスBで
+[alphasea-example-model](https://github.com/alphasea-dapp/alphasea-example-model) を動かします。
 
-alphasea-agentとredis(alphasea-agentが使う)を起動。
+alphasea-example-modelは alphasea-agent に対して毎ラウンド、予測を投稿するプログラムです。
+Predictorをやるために必要です。
 
-```bash
-cd alphasea-agent
-docker-compose -f docker-compose.yml up -d
-```
-
-## インスタンスBでalphasea-example-modelを動かす
-
-[alphasea-example-model](https://github.com/alphasea-dapp/alphasea-example-model)を動かします。
-Predictor(予測を売る人)をやるために必要です。
+まず、以下のコマンドを実行し、alphasea-example-modelリポジトリをホームディレクトリにクローンします。
 
 ```bash
 cd ~/
 git clone https://github.com/alphasea-dapp/alphasea-example-model.git
 ```
 
-[alphasea-example-model](https://github.com/alphasea-dapp/alphasea-example-model)
-の手順にしたがって.envを作成。ALPHASEA_AGENT_BASE_URLにインスタンスAの内部IPを設定します
+以下のリンク先の手順に従い、alphasea-example-modelを動かします。
+リンク先では.envファイル作成、起動を行います。
+.envに設定するALPHASEA_AGENT_BASE_URLには、インスタンスAの内部IPアドレスを設定してください。
 
-.envの例
-```text
-ALPHASEA_AGENT_BASE_URL=http://internal_ip:8070
-ALPHASEA_MODEL_ID=my_model_id
-ALPHASEA_MODEL_PATH=/app/data/example_model_rank.xz
-```
+[alphasea-example-model #動かし方](https://github.com/alphasea-dapp/alphasea-example-model#%E5%8B%95%E3%81%8B%E3%81%97%E6%96%B9)
 
-ALPHASEA_MODEL_PATHは学習したモデルのパス(dockerコンテナ内でのパス)を指定します。
-学習済みモデルファイルと学習方法は以下を見てください。
+## 5. インスタンスBでalphasea-trade-botを動かす
 
-- [alphasea-example-model/data](https://github.com/alphasea-dapp/alphasea-example-model/tree/master/data)
-- [alphasea-example-model/notebooks](https://github.com/alphasea-dapp/alphasea-example-model/tree/master/notebooks)
-
-alphasea-example-modelを起動
-
-```bash
-docker-compose up -d
-```
-
-alphasea-example-modelは、
-2時間ごとにインスタンスAのalphasea-agentに対して予測を投稿します。
-
-## インスタンスBでalphasea-trade-botを動かす
-
+インスタンスBで
 [alphasea-trade-bot](https://github.com/alphasea-dapp/alphasea-trade-bot) を動かします。
-Executor(予測を買ってCEXでトレードする人)をやるために必要です。
-対応している取引所は[alphasea-trade-bot](https://github.com/alphasea-dapp/alphasea-trade-bot)を見てください。
+
+alphasea-trade-botは、定期的にalphasea-agent からメタモデルポジションを取得し、仮想通貨取引所の無期限先物(Perpetual)のポジションを自動でリバランスするボットです。
+対応している取引所はFTXとBinanceです。
+Executorをやるために必要です。
+
+まず、以下のコマンドを実行し、alphasea-trade-botリポジトリをホームディレクトリにクローンします。
 
 ```bash
 cd ~/
 git clone https://github.com/alphasea-dapp/alphasea-trade-bot.git
 ```
 
+以下のリンク先の手順に従い、alphasea-trade-botを動かします。
+リンク先では.envファイル作成、起動を行います。
+.envに設定するALPHASEA_AGENT_BASE_URLには、インスタンスAの内部IPアドレスを設定してください。
+
 [alphasea-trade-bot#動かし方](https://github.com/alphasea-dapp/alphasea-trade-bot#%E5%8B%95%E3%81%8B%E3%81%97%E6%96%B9)
-の手順にしたがって.envを作成。ALPHASEA_AGENT_BASE_URLにインスタンスAの内部IPを設定します
 
-.envの例
-```text
-ALPHASEA_AGENT_BASE_URL=http://internal_ip:8070
-上記の手順に記載のCCXT設定
-```
+## 6. リーダーボード確認
 
-alphasea-trade-botを起動
-
-```bash
-docker-compose up -d
-```
-
-alphasea-trade-botは、
-CEXのPERPを、
-インスタンスBのalphasea-agentから取得したメタモデルポジションに合わせるように、
-リバランスし続けます。
-
-## リーダーボードを見る
-
-以下でAlphaSea (Polygon mainnet)のリーダーボードを見れます。
+以下のリンクでAlphaSea (Polygon mainnet)のリーダーボードを見れます。
+ブロックチェーン上にあるデータを表示しています。
 
 [AlphaSea Leaderboard (mainnet)](https://app.alphasea.io/)
 
-ブロックチェーン上にあるデータを表示しているだけなので、
-以下を動かせばローカルで同じものを見れます。
+alphasea-example-modelのセットアップが正常に完了していれば、
+2時間以内にリーダーボード上に自分のモデルが表示されます。
 
-- [alphasea-ui](https://github.com/alphasea-dapp/alphasea-ui)
-- [alphasea/subgraph](https://github.com/alphasea-dapp/alphasea)
+もし、表示されない場合は、各プログラムのログを確認してみてください。
+以下のコマンドでログを確認できます。
+
+```bash
+docker-compose logs
+```
+
+以上でセットアップは完了です。
 
 ## 次に何をすれば良い？
 
-モデル改良の手引き(未執筆)
+Predictorをやる場合は、
+以下に従ってモデルを改良します。
+
+[alphasea-example-model#モデル改良](https://github.com/alphasea-dapp/alphasea-example-model#%E3%83%A2%E3%83%87%E3%83%AB%E6%94%B9%E8%89%AF)
+
+Executorだけやる場合は、
+alphasea-trade-botがトレードするのを待つだけなので、
+特にやることは無いです。
 
 ## FAQ
 
-[@richmanbtc2](https://twitter.com/richmanbtc2)で質問してください。
+ツイッターかgithub issueで質問してください。
 
-都度加筆
+- [@richmanbtc2](https://twitter.com/richmanbtc2)
+- [alphasea-agent](https://github.com/alphasea-dapp/alphasea-agent)
+- [alphasea-example-model](https://github.com/alphasea-dapp/alphasea-example-model)
+- [alphasea-trade-bot](https://github.com/alphasea-dapp/alphasea-trade-bot)
