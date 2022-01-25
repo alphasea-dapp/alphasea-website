@@ -5,6 +5,10 @@ date: 2022-01-17T00:00:00+00:00
 draft: false
 ---
 
+## 全体像
+
+{{< figure src="/svgs/overview.svg" title="AlphaSea overview" >}}
+
 ## 登場人物
 
 ### Predictor
@@ -16,10 +20,6 @@ Numeraiだとシグナルを投稿する人に相当します。
 
 予測を買って、メタモデルで統合し、トレードする人です。
 NumeraiだとNumerai fundに相当します。
-
-## 全体像
-
-{{< figure src="/svgs/overview.svg" title="AlphaSea overview" >}}
 
 ## 取引方法
 
