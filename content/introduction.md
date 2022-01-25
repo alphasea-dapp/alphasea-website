@@ -10,6 +10,10 @@ Numeraiのようなことを分散型で実装するために作りました。
 
 [AlphaSeaの仕組み](/how-it-works)も見ると理解しやすいです。
 
+## 全体像
+
+{{< figure src="/svgs/overview.svg" title="AlphaSea overview" >}}
+
 ## メリット
 
 ### 運用資金をステークしなくていいので仮想通貨の価格変動リスクに晒されづらい

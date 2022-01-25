@@ -17,6 +17,10 @@ Numeraiだとシグナルを投稿する人に相当します。
 予測を買って、メタモデルで統合し、トレードする人です。
 NumeraiだとNumerai fundに相当します。
 
+## 全体像
+
+{{< figure src="/svgs/overview.svg" title="AlphaSea overview" >}}
+
 ## 取引方法
 
 polygon(matic)上のスマートコントラクトを介して予測データを売買します。
