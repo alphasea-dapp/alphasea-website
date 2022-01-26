@@ -8,7 +8,7 @@ draft: false
 AlphaSeaは市場アルファのための分散型マーケットプレイスです。
 Numeraiのようなことを分散型で実装するために作りました。
 
-[AlphaSeaの仕組み](/how-it-works)も見ると理解しやすいです。
+[AlphaSeaの仕組み](/how-it-works/)も見ると理解しやすいです。
 
 ## 全体像
 
@@ -66,7 +66,7 @@ Predictorは成績さえ良ければ資金力が無くても稼げる可能性�
 必要なのはガス代だけです。
 反面、弱いモデルはガス代負けする可能性があります。
 
-メタモデルのロジック詳細は[AlphaSeaの仕組み](/how-it-works)参照
+メタモデルのロジック詳細は[AlphaSeaの仕組み](/how-it-works/)参照
 
 ## Numeraiとの比較
 

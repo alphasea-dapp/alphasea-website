@@ -7,8 +7,8 @@ draft: false
 
 AlphaSeaのチュートリアルです。
 
-- [AlphaSeaとは？](/introduction)
-- [AlphaSeaの仕組み](/how-it-works)
+- [AlphaSeaとは？](/introduction/)
+- [AlphaSeaの仕組み](/how-it-works/)
 
 ## このチュートリアルでやること
 
@@ -29,7 +29,7 @@ AlphaSeaのチュートリアルです。
 - alphasea-trade-botを動かすと自動トレードで損失する可能性があります
 - バグも含めて自己責任
 
-\* PredictorとExecutorについては[AlphaSeaの仕組み](/how-it-works)参照
+\* PredictorとExecutorについては[AlphaSeaの仕組み](/how-it-works/)参照
 
 ## 1. Google Compute Engineインスタンスを作る
 

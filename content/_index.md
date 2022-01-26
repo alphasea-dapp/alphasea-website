@@ -21,7 +21,7 @@ Numeraiのようなことを分散型で実装するために作りました。
 
 詳細は以下を参照
 
-[AlphaSeaとは？](/introduction)
+[AlphaSeaとは？](/introduction/)
 
 ## 仕組み
 
@@ -34,7 +34,7 @@ ExecutorはNumerai fundに相当します。
 polygon(matic)上のスマートコントラクトを使って実装されています。
 詳細は以下を参照。
 
-[AlphaSeaの仕組み](/how-it-works)
+[AlphaSeaの仕組み](/how-it-works/)
 
 ## 進捗
 
@@ -44,7 +44,7 @@ polygon(matic)上のスマートコントラクトを使って実装されてい
 
 現状は3です。
 
-[AlphaSea チュートリアル for Polygon mainnet](/tutorial)
+[AlphaSea チュートリアル for Polygon mainnet](/tutorial/)
 
 ## リンク
 

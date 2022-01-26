@@ -8,15 +8,15 @@ hasCJKLanguage = true
 [menu]
 [[menu.main]]
   name = 'AlphaSeaとは？'
-  url = '/introduction'
+  url = '/introduction/'
   weight = -140
 [[menu.main]]
   name = '仕組み'
-  url = '/how-it-works'
+  url = '/how-it-works/'
   weight = -130
 [[menu.main]]
   name = 'チュートリアル'
-  url = '/tutorial'
+  url = '/tutorial/'
   weight = -120
 [[menu.main]]
   name = 'GitHub'
