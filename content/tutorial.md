@@ -125,8 +125,8 @@ git clone https://github.com/alphasea-dapp/alphasea-example-model.git
 [alphasea-trade-bot](https://github.com/alphasea-dapp/alphasea-trade-bot) を動かします。
 
 alphasea-trade-botは、定期的にalphasea-agent からメタモデルポジションを取得し、仮想通貨取引所の無期限先物(Perpetual)のポジションを自動でリバランスするボットです。
-対応している取引所はFTXとBinanceです。
 Executorをやるために必要です。
+対応している取引所はFTXとBinanceです。
 
 まず、以下のコマンドを実行し、alphasea-trade-botリポジトリをホームディレクトリにクローンします。
 
@@ -173,7 +173,7 @@ alphasea-trade-botがトレードするのを待つだけなので、
 
 ## FAQ
 
-ツイッターかgithub issueで質問してください。
+わからないことがあれば、ツイッターかgithub issueで質問してください。
 
 - [@richmanbtc2](https://twitter.com/richmanbtc2)
 - [alphasea-agent](https://github.com/alphasea-dapp/alphasea-agent)
