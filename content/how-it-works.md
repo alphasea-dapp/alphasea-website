@@ -1,13 +1,13 @@
 ---
 title: "AlphaSeaの仕組み"
 description: "AlphaSea is a decentralized marketplace for market alphas."
-date: 2022-01-17T00:00:00+00:00
+date: 2022-02-07T00:00:00+00:00
 draft: false
 ---
 
 ## 全体像
 
-{{< figure src="/svgs/overview.svg" title="AlphaSea overview" >}}
+{{< figure src="/svgs/overview-v2.svg" title="AlphaSea v2 overview" >}}
 
 ## 登場人物
 
@@ -21,9 +21,11 @@ Numeraiだとシグナルを投稿する人に相当します。
 予測を買って、メタモデルで統合し、トレードする人です。
 NumeraiだとNumerai fundに相当します。
 
+AlphaSea v2では全員がPredictorとExecutorを兼ねます。
+
 ## 取引方法
 
-polygon(matic)上のスマートコントラクトを介して予測データを売買します。
+polygon(matic)上のスマートコントラクトを介して予測データを共有します。
 カッコ内の英語はソースコードで使われている名前です。
 
 ### タイムライン
@@ -32,8 +34,7 @@ polygon(matic)上のスマートコントラクトを介して予測データを
 これを毎日繰り返します。
 
 - 00:00-00:08 Predictorが予測投稿 (Create Prediction)
-- 00:08-00:16 Executorが予測購入 (Purchase)
-- 00:16-00:24 Predictorが予測送信 (Ship)
+- 00:08-00:24 Predictorが予測共有 (Send Prediction)
 - 00:30-02:30 ExecutorがTWAP執行 (CEXなど。AlphaSeaの管轄外)
 - 26:30-26:45 Predictorが予測公開 (Publish)
 
@@ -50,29 +51,25 @@ Predictorが予測を投稿します。
 他人の予測をコピーする攻撃を防ぐためのものです。
 詳細は後述の攻撃で説明します。
 
-### 予測を購入 (Purchase)
+### 予測を共有 (Send)
 
-Executorが予測を購入します。
-購入時にShip用の公開鍵(publicKey)をブロックチェーン上に書き込みます。
+Predictorが予測を共有します。
+具体的には、Send用の公開鍵で暗号化した共通鍵(encryptedContentKey)をブロックチェーン上に書き込みます。
+受信者のみがencryptedContentKeyを復号化しcontentKeyを得られます。
+contentKeyでencryptedContentを復号化すれば予測を見れます。
+暗号化はNaClのBoxを使っています。
 
 補足
 
-- この公開鍵はウォレットの公開鍵とは異なります。
-
-### 購入者へ予測データを送る (Ship)
-
-Predictorが購入者へ予測データを送ります。
-具体的には、Ship用の公開鍵で暗号化した共通鍵(encryptedContentKey)をブロックチェーン上に書き込みます。
-購入者のみがencryptedContentKeyを復号化しcontentKeyを得られます。
-contentKeyでencryptedContentを復号化すれば予測を見れます。
-暗号化はNaClのBoxを使っています。
+- Send用の公開鍵はウォレットの公開鍵とは異なります
+- Send用の公開鍵は予め各自がブロックチェーン上に書き込んでおきます
 
 ### 予測データの公開 (Publish)
 
 しばらく経ったあとにPredictorが予測を公開します。
 具体的には共通鍵(contentKey)をブロックチェーン上に書き込みます。
 誰でも予測を見れるようになります。
-次回以降、Executorが予測を購入するときの検討材料になります。
+次回以降、メタモデル計算の材料になります。
 
 ## 攻撃と対策
 
@@ -97,8 +94,7 @@ contentKeyでencryptedContentを復号化すれば予測を見れます。
 ### 適当な予測を投稿しまくる
 
 適当な予測を投稿しまくり、
-偶然フォワード成績の良い予測を産み出し、
-購入されることを期待する攻撃です。
+偶然フォワード成績の良い予測を産み出す攻撃です。
 
 対策
 
@@ -107,19 +103,6 @@ contentKeyでencryptedContentを復号化すれば予測を見れます。
 予測の数に比例してガス代がかかるので、
 適当な予測を投稿しすぎると、ガス代負けして損失するので、
 攻撃が抑制されます。
-
-### 予測を購入せずに公開後タダ乗りする
-
-予測が公開されたあとに予測に従ってトレードする攻撃です。
-予測を購入する場合よりもエントリーが遅れますが、
-リターンを得られる可能性があります。
-
-対策
-
-予測の公開を遅らせる
-
-最初のアイデアでは2:00-2:15UTCに予測公開でしたが、
-1日遅らせて、26:00-26:15UTCにしました。
 
 ## アーキテクチャー
 
@@ -141,7 +124,7 @@ alphasea-agentは、AlphaSeaスマートコントラクトを、
 シンプルなインターフェースで扱えるようにするための、
 HTTPサーバーです。
 Predictor, Executorをやる人はこれを動かす必要があります。
-予測購入の判断ロジックやメタモデルはagentに組み込まれています。
+予測共有の判断ロジックやメタモデルはagentに組み込まれています。
 
 [alphasea-dapp/alphasea-agent](https://github.com/alphasea-dapp/alphasea-agent)
 
@@ -164,7 +147,7 @@ Executorをやる人は、これを動かせば良いです。
 ### AlphaSea Contract
 
 AlphaSeaのスマートコントラクトです。
-予測データの投稿、購入、送信、公開を処理します。
+予測データの投稿、送信、公開を処理します。
 
 [alphasea-dapp/alphasea](https://github.com/alphasea-dapp/alphasea)
 
@@ -206,7 +189,6 @@ thegraph.comのhosted serviceを使っています。
 |データ|保存場所|ライフサイクル|
 |:-:|:-:|:-:|
 |予測データ|ブロックチェーン|永久|
-|購入データ|ブロックチェーン|永久|
 |予測暗号化の鍵|redis (disk永続化)|データ削除するまで|
 |公開前の予測データ|redis (disk永続化)|48H|
 |モデル選択結果|redis (disk永続化)|48H|
@@ -221,24 +203,15 @@ thegraph.comのhosted serviceを使っています。
 メタモデルはalphasea-agentで実装されています。
 現状の実装は以下のようになっています。
 
-- 過去60日間の成績で評価 (成績が確定していない直近1日は除く)
-- アンサンブルしたときのシャープレシオが最大となるように複数モデルを選択
-- 購入したモデルを等ウェイトでアンサンブル
-- 購入費用を考慮 (購入することで得られるリターンより、購入費用が多い場合は購入しない意図。ガス代は未実装)
+- 過去60日間のスコアで評価 (成績が確定していない直近1日は除く)
+- スコアはmaxSPRTの対数尤度比
+- 共有された予測のスコア最大値をs_maxとすると、定数aに対して、s_max - a以上の予測を等ウェイトでアンサンブル
 - 取引コストを考慮
 
 実装箇所
 
 - [alphasea-agent/src/executor/executor.py](https://github.com/alphasea-dapp/alphasea-agent/blob/master/src/executor/executor.py)
 - [alphasea-agent/src/model_selection/equal_weight_model_selector.py](https://github.com/alphasea-dapp/alphasea-agent/blob/master/src/model_selection/equal_weight_model_selector.py)
-
-## 自動価格調整
-
-予測の販売価格は以下のアルゴリズムで自動調整されます。
-数値はalphasea-agentの設定で変えられます。
-
-- 前回購入が0個: 価格を20%減らす
-- 前回購入が1個以上: 価格を20%増やす
 
 ## トーナメント
 
@@ -264,13 +237,6 @@ thegraph.comのhosted serviceを使っています。
 |22:08|22:30-24:30|46:30-48:30|
 
 時刻はUTC。
-
-Executorで資産が少ない場合はガス代を節約するために、
-00:30執行のもののみ購入なども考えられる。
-トーナメントが多いのは執行を24Hに分散させてスケールさせるためなので、
-購入するトーナメントが少なくても成績はあまり変わらないはず。
-ただし、アンサンブル効果で多少は成績改善するので、
-資産が多い場合は全てを購入するのが得だと思う。
 
 ## トーナメントルール
 
@@ -352,39 +318,6 @@ ret with costがcostの4倍くらいなので、
 少し儲かりづらかった気がするが、
 稼働していた実績があるので、10%とおいた。
 
-## ガス代試算
-
-条件
-
-- ブロックチェーン: Polygon
-- Predictor: 100人
-- Predictor予測数: 1/人/tournament
-- Predictor gas: 100000/prediction
-- Executor: 100人
-- Executor購入数: 5/人/tournament
-- Executor gas: 60000/purchase
-- トーナメント数: 12/日
-- gas price: 400gwei
-- MATIC price: 250円
-
-結果
-
-1人
-
-- Predictor gas fee: 3600円/月
-- Executor gas fee: 10800円/月
-
-全体
-
-- Predictor total gas fee: 36万円/月
-- Executor total gas fee: 108万円/月
-- AlphaSea total gas fee: 144万円/月
-
-00:30執行ラウンドのみ参加なら1/12になる。
-
-最初、ETHで作りましたが、試算したところガス代負けしそうなので、
-EVM互換の中で最も馴染みがありそうなPolygonに変えました。
-
 ## TWAP執行時間と執行ラグ
 
 簡単な予測モデルで色々試して、
@@ -414,7 +347,6 @@ TWAP執行時間は2H、ラグは0.5Hにしました。
 
 - 予測精度 (メタモデル。インセンティブ設計など)
 - 参加コスト (ガス代、ファンドfee、NMRリスクなど)
-- 思想 (decentralized。オープンソース)
 
 トーナメントの質
 
@@ -453,3 +385,7 @@ $12B * 30日 * 1銘柄 * 0.1 * 0.002 = $72M/month = 82億円/month
 結果
 
 $4B * 30日 * 1銘柄 * 0.1 * 0.002 = $24M/month = 27億円/month
+
+## v1の仕組み (old)
+
+[AlphaSeaの仕組み v1 (old)](/how-it-works-v1/)
