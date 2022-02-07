@@ -13,12 +13,12 @@ draft: false
 
 ### Predictor
 
-予測を売る人です。
+予測を共有する人です。
 Numeraiだとシグナルを投稿する人に相当します。
 
 ### Executor
 
-予測を買って、メタモデルで統合し、トレードする人です。
+予測を受け取って、メタモデルで統合し、トレードする人です。
 NumeraiだとNumerai fundに相当します。
 
 AlphaSea v2では全員がPredictorとExecutorを兼ねます。
