@@ -15,17 +15,17 @@ AlphaSeaのチュートリアルです。
 やること
 
 - alphasea-agentを動かす
-- alphasea-example-modelを動かす (Predictorをやる場合のみ)
-- alphasea-trade-botを動かす (Executorをやる場合のみ)
+- alphasea-example-modelを動かす (Predictor)
+- alphasea-trade-botを動かす (Executor)
 
 実現されること
 
-- 毎ラウンド予測を売る (Predictor)
+- 毎ラウンド予測を共有 (Predictor)
 - メタモデルポジションに従って仮想通貨取引所で自動トレード (Executor)
 
 注意
 
-- このチュートリアルはPolygonのmainnetで動かすので、実際にガス代や予測購入費用などがかかります
+- このチュートリアルはPolygonのmainnetで動かすので、実際にガス代がかかります
 - alphasea-trade-botを動かすと自動トレードで損失する可能性があります
 - バグも含めて自己責任
 
@@ -162,14 +162,9 @@ docker-compose logs
 
 ## 次に何をすれば良い？
 
-Predictorをやる場合は、
 以下に従ってモデルを改良します。
 
 [alphasea-example-model#モデル改良](https://github.com/alphasea-dapp/alphasea-example-model#%E3%83%A2%E3%83%87%E3%83%AB%E6%94%B9%E8%89%AF)
-
-Executorだけやる場合は、
-alphasea-trade-botがトレードするのを待つだけなので、
-特にやることは無いです。
 
 ## FAQ
 
